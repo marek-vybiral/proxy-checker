@@ -10,7 +10,6 @@ namespace ProxyChecker
     public delegate void DataChangeEventHandler();
     public class ProxyDataModel
     {
-        public event DataChangeEventHandler DataChanged;
         public DataTable Table { get; set; }
         public IList<Proxy> ProxyList { get; set; }
 
@@ -28,7 +27,6 @@ namespace ProxyChecker
         {
             this.Table.Rows.Add(p.IPEndPoint.Address, p.IPEndPoint.Port, p.Status);
             this.ProxyList.Add(p);
-            p.Changed += (this.FireDataCahngedFromEvent);
         }
 
         public void AddProxyList(IList<Proxy> list)
@@ -39,11 +37,6 @@ namespace ProxyChecker
             }
         }
 
-        public void FireDataCahngedFromEvent()
-        {
-            this.DataChanged();
-        }
-
         public void UpdateTable()
         {
             this.Table.Clear();
@@ -52,6 +45,12 @@ namespace ProxyChecker
             {
                 this.Table.Rows.Add(p.IPEndPoint.Address, p.IPEndPoint.Port, p.Status);
             }
+        }
+
+        public void RemoveAll()
+        {
+            this.ProxyList.Clear();
+            this.Table.Clear();
         }
     }
 }

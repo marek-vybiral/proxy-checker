@@ -31,6 +31,7 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnStorno = new System.Windows.Forms.Button();
             this.proxyTextBox = new System.Windows.Forms.RichTextBox();
+            this.labelFormat = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnOk
@@ -62,11 +63,21 @@
             this.proxyTextBox.TabIndex = 3;
             this.proxyTextBox.Text = "";
             // 
+            // labelFormat
+            // 
+            this.labelFormat.AutoSize = true;
+            this.labelFormat.Location = new System.Drawing.Point(12, 381);
+            this.labelFormat.Name = "labelFormat";
+            this.labelFormat.Size = new System.Drawing.Size(216, 13);
+            this.labelFormat.TabIndex = 4;
+            this.labelFormat.Text = "One IP and port devided by : or , for one line";
+            // 
             // AddProxyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(486, 414);
+            this.Controls.Add(this.labelFormat);
             this.Controls.Add(this.proxyTextBox);
             this.Controls.Add(this.btnStorno);
             this.Controls.Add(this.btnOk);
@@ -75,6 +86,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Proxy";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -83,5 +95,6 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnStorno;
         private System.Windows.Forms.RichTextBox proxyTextBox;
+        private System.Windows.Forms.Label labelFormat;
     }
 }

@@ -8,10 +8,8 @@ using System.Diagnostics;
 
 namespace ProxyChecker
 {
-    public delegate void AttributeChangeEventHandler();
     public class Proxy
     {
-        public event AttributeChangeEventHandler Changed;
         public IPEndPoint IPEndPoint { get; set; }
         public string Type { get; set; }
         public string Status
@@ -42,7 +40,6 @@ namespace ProxyChecker
         public void PerformTest()
         {
             this._working = Proxy.TestProxy(this);
-            //this.Changed();
         }
 
         public static Proxy Parse(string str)
@@ -57,12 +54,11 @@ namespace ProxyChecker
                 string portStr = parts[1];
                 IPAddress ip;
                 IPAddress.TryParse(ipStr, out ip);
-                IPEndPoint endPoint = new IPEndPoint(ip, int.Parse(portStr));
-                return new Proxy(endPoint);
+
+                return new Proxy(new IPEndPoint(ip, int.Parse(portStr)));
             }
             catch (Exception e)
             {
-                Debug.WriteLine(str);
                 return null;
             }
         }
