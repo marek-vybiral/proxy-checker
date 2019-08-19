@@ -38,6 +38,7 @@
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(414, 18);
             this.progressBar.TabIndex = 0;
+            this.progressBar.Click += new System.EventHandler(this.progressBar_Click);
             // 
             // progressLabel
             // 

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
+using System.Windows.Forms.VisualStyles;
 
 namespace ProxyChecker
 {
@@ -19,8 +14,16 @@ namespace ProxyChecker
 
         public void SetProgress(int progress)
         {
-            this.progressBar.Value = progress;
-            this.progressLabel.Text = progress.ToString() + "%";
+            Invoke(new Action(() =>
+            {
+                progressBar.Value = progress;
+                progressLabel.Text = progress + @"%";
+            }));
+           
+        }
+
+        private void progressBar_Click(object sender, System.EventArgs e) {
+
         }
     }
 }

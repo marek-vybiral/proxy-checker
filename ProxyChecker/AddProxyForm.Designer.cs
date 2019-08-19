@@ -57,8 +57,10 @@
             // proxyTextBox
             // 
             this.proxyTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.proxyTextBox.EnableAutoDragDrop = true;
             this.proxyTextBox.Location = new System.Drawing.Point(12, 12);
             this.proxyTextBox.Name = "proxyTextBox";
+            this.proxyTextBox.ShowSelectionMargin = true;
             this.proxyTextBox.Size = new System.Drawing.Size(462, 363);
             this.proxyTextBox.TabIndex = 3;
             this.proxyTextBox.Text = "";

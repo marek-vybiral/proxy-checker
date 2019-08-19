@@ -97,6 +97,7 @@
             this.butSettings.TabIndex = 4;
             this.butSettings.Text = "Settings";
             this.butSettings.UseVisualStyleBackColor = true;
+            this.butSettings.Click += new System.EventHandler(this.butSettings_Click);
             // 
             // textBoxLog
             // 

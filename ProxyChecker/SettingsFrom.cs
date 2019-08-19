@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProxyChecker
@@ -15,6 +8,17 @@ namespace ProxyChecker
         public SettingsFrom()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (tb_con.Text != null || tb_con.Text != "")
+                Proxy.Request.Timeout =Convert.ToInt32(tb_con.Text);
+            if (tb_limit.Text != null || tb_limit.Text != "")
+                MainFrom.MaxParallelism = Convert.ToInt32(tb_con.Text);
+            if (tb_user_agent.Text != null || tb_user_agent.Text != "")
+                Proxy.Request.UserAgent = tb_user_agent.Text;
+            
         }
     }
 }

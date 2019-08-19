@@ -1,56 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProxyChecker
 {
     public delegate void DataChangeEventHandler();
+
     public class ProxyDataModel
     {
-        public DataTable Table { get; set; }
-        public IList<Proxy> ProxyList { get; set; }
-
         public ProxyDataModel()
         {
-            this.Table = new DataTable();
-            this.Table.Columns.Add("IP", typeof(string));
-            this.Table.Columns.Add("Port", typeof(int));
-            this.Table.Columns.Add("Status", typeof(string));
+            Table = new DataTable();
+            Table.Columns.Add("IP", typeof (string));
+            Table.Columns.Add("Port", typeof (int));
+            Table.Columns.Add("Status", typeof (string));
 
-            this.ProxyList = new List<Proxy>();
+            ProxyList = new List<Proxy>();
         }
 
-        public void AddProxy(Proxy p)
+        public DataTable Table { get; }
+        public IList<Proxy> ProxyList { get; }
+
+        private void AddProxy(Proxy p)
         {
-            this.Table.Rows.Add(p.IPEndPoint.Address, p.IPEndPoint.Port, p.Status);
-            this.ProxyList.Add(p);
+            Table.Rows.Add(p.IpEndPoint.Address, p.IpEndPoint.Port, p.Status);
+            ProxyList.Add(p);
         }
 
-        public void AddProxyList(IList<Proxy> list)
+        public void AddProxyList(IEnumerable<Proxy> list)
         {
-            foreach (Proxy p in list)
+            foreach (var p in list)
             {
-                this.AddProxy(p);
+                AddProxy(p);
             }
         }
 
         public void UpdateTable()
         {
-            this.Table.Clear();
+            Table.Clear();
 
-            foreach (Proxy p in this.ProxyList)
+            foreach (var p in ProxyList)
             {
-                this.Table.Rows.Add(p.IPEndPoint.Address, p.IPEndPoint.Port, p.Status);
+                Table.Rows.Add(p.IpEndPoint.Address, p.IpEndPoint.Port, p.Status);
             }
         }
 
         public void RemoveAll()
         {
-            this.ProxyList.Clear();
-            this.Table.Clear();
+            ProxyList.Clear();
+            Table.Clear();
         }
     }
 }

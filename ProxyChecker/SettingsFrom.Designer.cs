@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tb_con = new System.Windows.Forms.TextBox();
+            this.tb_user_agent = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.tb_limit = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -48,19 +48,19 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Connection timeout (ms):";
             // 
-            // textBox1
+            // tb_con
             // 
-            this.textBox1.Location = new System.Drawing.Point(141, 6);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(357, 20);
-            this.textBox1.TabIndex = 1;
+            this.tb_con.Location = new System.Drawing.Point(141, 6);
+            this.tb_con.Name = "tb_con";
+            this.tb_con.Size = new System.Drawing.Size(357, 20);
+            this.tb_con.TabIndex = 1;
             // 
-            // textBox2
+            // tb_user_agent
             // 
-            this.textBox2.Location = new System.Drawing.Point(141, 58);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(357, 20);
-            this.textBox2.TabIndex = 3;
+            this.tb_user_agent.Location = new System.Drawing.Point(141, 58);
+            this.tb_user_agent.Name = "tb_user_agent";
+            this.tb_user_agent.Size = new System.Drawing.Size(357, 20);
+            this.tb_user_agent.TabIndex = 3;
             // 
             // label2
             // 
@@ -71,12 +71,12 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "User agent:";
             // 
-            // textBox3
+            // tb_limit
             // 
-            this.textBox3.Location = new System.Drawing.Point(141, 32);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(357, 20);
-            this.textBox3.TabIndex = 5;
+            this.tb_limit.Location = new System.Drawing.Point(141, 32);
+            this.tb_limit.Name = "tb_limit";
+            this.tb_limit.Size = new System.Drawing.Size(357, 20);
+            this.tb_limit.TabIndex = 5;
             // 
             // label3
             // 
@@ -95,6 +95,7 @@
             this.button1.TabIndex = 6;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -122,11 +123,11 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.tb_limit);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.tb_user_agent);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tb_con);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "SettingsFrom";
@@ -140,10 +141,10 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tb_con;
+        private System.Windows.Forms.TextBox tb_user_agent;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox tb_limit;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
