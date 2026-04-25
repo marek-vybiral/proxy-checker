@@ -1,51 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using Eto.Drawing;
+using Eto.Forms;
 
-namespace ProxyChecker
+namespace ProxyChecker;
+
+public sealed class AddProxyForm : Dialog<IReadOnlyList<Proxy>?>
 {
-    public partial class AddProxyForm : Form
+    private readonly TextArea _proxyTextBox;
+
+    public AddProxyForm()
     {
-        public AddProxyForm()
+        Title = "Add Proxy";
+        ClientSize = new Size(486, 414);
+        Resizable = false;
+
+        _proxyTextBox = new TextArea
         {
-            InitializeComponent();
-        }
+            Size = new Size(462, 363),
+        };
 
-        private void btnOk_Click(object sender, EventArgs e)
+        var labelFormat = new Label
         {
-            this.DialogResult = DialogResult.OK;
-        }
+            Text = "One IP and port divided by : or , per line",
+        };
 
-        private void btnStorno_Click(object sender, EventArgs e)
+        var btnOk = new Button { Text = "Add", Size = new Size(75, 23) };
+        btnOk.Click += (_, _) =>
         {
-            this.DialogResult = DialogResult.Cancel;
-        }
+            Close(Parse());
+        };
 
-        public IList<Proxy> GetData()
+        var btnCancel = new Button { Text = "Storno", Size = new Size(75, 23) };
+        btnCancel.Click += (_, _) => Close(null);
+
+        var layout = new PixelLayout();
+        layout.Add(_proxyTextBox, 12, 12);
+        layout.Add(labelFormat, 12, 386);
+        layout.Add(btnCancel, 318, 381);
+        layout.Add(btnOk, 399, 381);
+        Content = layout;
+
+        DefaultButton = btnOk;
+        AbortButton = btnCancel;
+    }
+
+    private IReadOnlyList<Proxy> Parse()
+    {
+        var list = new List<Proxy>();
+        using var reader = new StringReader(_proxyTextBox.Text ?? string.Empty);
+        string? line;
+        while ((line = reader.ReadLine()) != null)
         {
-            IList<Proxy> proxyList = new List<Proxy>();
-
-            using (StringReader reader = new StringReader(this.proxyTextBox.Text))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    Proxy p = Proxy.Parse(line);
-                    if (p != null)
-                    {
-                        proxyList.Add(p);
-                    }                    
-                }
-            }
-
-            return proxyList;
+            var p = Proxy.Parse(line);
+            if (p != null) list.Add(p);
         }
+        return list;
     }
 }

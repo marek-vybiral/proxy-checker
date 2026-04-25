@@ -1,84 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
-using System.Diagnostics;
+using System.Net.Http;
 
-namespace ProxyChecker
+namespace ProxyChecker;
+
+public sealed class Proxy
 {
-    public class Proxy
+    public IPEndPoint Endpoint { get; }
+    public string? Type { get; }
+
+    private bool? _working;
+
+    public string Status => _working switch
     {
-        public IPEndPoint IPEndPoint { get; set; }
-        public string Type { get; set; }
-        public string Status
+        true => "online",
+        false => "offline",
+        null => "unknown",
+    };
+
+    public Proxy(IPEndPoint endpoint, string? type = null, bool? working = null)
+    {
+        Endpoint = endpoint;
+        Type = type;
+        _working = working;
+    }
+
+    public async Task PerformTestAsync(TimeSpan timeout, string userAgent, CancellationToken ct = default)
+    {
+        _working = await TestAsync(this, timeout, userAgent, ct);
+    }
+
+    public static Proxy? Parse(string raw)
+    {
+        var normalized = raw.Replace(';', ':').Replace(',', ':').Trim();
+        var parts = normalized.Split(':', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length < 2) return null;
+        if (!IPAddress.TryParse(parts[0], out var ip)) return null;
+        if (!int.TryParse(parts[1], out var port)) return null;
+        if (port < 1 || port > 65535) return null;
+        return new Proxy(new IPEndPoint(ip, port));
+    }
+
+    public static async Task<bool> TestAsync(Proxy proxy, TimeSpan timeout, string userAgent, CancellationToken ct = default)
+    {
+        var handler = new HttpClientHandler
         {
-            get
-            {
-                if (this._working == true)
-                {
-                    return "online";
-                }
-                else if (this._working == null)
-                {
-                    return "uknown";
-                }
-                return "offline";
-            }
+            Proxy = new WebProxy(proxy.Endpoint.Address.ToString(), proxy.Endpoint.Port),
+            UseProxy = true,
+        };
+
+        using var client = new HttpClient(handler) { Timeout = timeout };
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
+
+        try
+        {
+            using var response = await client.GetAsync("http://example.com", HttpCompletionOption.ResponseHeadersRead, ct);
+            return response.IsSuccessStatusCode;
         }
-
-        private Nullable<bool> _working = false;
-
-        public Proxy(IPEndPoint endPoint, string type = null, Nullable<bool> working = null)
+        catch
         {
-            this.IPEndPoint = endPoint;
-            this.Type = type;
-            this._working = working;
-        }
-
-        public void PerformTest()
-        {
-            this._working = Proxy.TestProxy(this);
-        }
-
-        public static Proxy Parse(string str)
-        {
-            str = str.Replace(';', ':');
-            str = str.Replace(',', ':');
-            string[] parts = str.Split(':');
-
-            try
-            {
-                string ipStr = parts[0];
-                string portStr = parts[1];
-                IPAddress ip;
-                IPAddress.TryParse(ipStr, out ip);
-
-                return new Proxy(new IPEndPoint(ip, int.Parse(portStr)));
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
-
-        public static bool TestProxy(Proxy proxy)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://google.com");
-            request.Proxy = new WebProxy(proxy.IPEndPoint.Address.ToString(), proxy.IPEndPoint.Port);
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36";
-            request.Timeout = 2000;
-
-            try
-            {
-                WebResponse response = request.GetResponse();
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;            
+            return false;
         }
     }
 }
